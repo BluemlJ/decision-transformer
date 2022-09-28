@@ -304,10 +304,12 @@ class Env():
         return len(self.actions)
 
     def render(self):
+        return
         cv2.imshow('screen', self.ale.getScreenRGB()[:, :, ::-1])
         cv2.waitKey(1)
 
     def close(self):
+        return
         cv2.destroyAllWindows()
 
 class Args:
