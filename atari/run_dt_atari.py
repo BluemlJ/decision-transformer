@@ -19,6 +19,9 @@ import blosc
 import argparse
 from create_dataset import create_dataset
 
+from rtpt import RTPT
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--seed', type=int, default=123)
 parser.add_argument('--context_length', type=int, default=30)
@@ -65,7 +68,10 @@ class StateActionReturnDataset(Dataset):
 
         return states, actions, rtgs, timesteps
 
-obss, actions, returns, done_idxs, rtgs, timesteps = create_dataset(args.num_buffers, args.num_steps, args.game, args.data_dir_prefix, args.trajectories_per_buffer)
+#obss, actions, returns, done_idxs, rtgs, timesteps = create_dataset(args.num_buffers, args.num_steps, args.game, args.data_dir_prefix, args.trajectories_per_buffer)
+
+from create_our_dataset import convert
+obss, actions, returns, done_idxs, rtgs, timesteps = convert("/data/pong/")
 
 # set up logging
 logging.basicConfig(
@@ -79,6 +85,10 @@ train_dataset = StateActionReturnDataset(obss, args.context_length*3, actions, d
 mconf = GPTConfig(train_dataset.vocab_size, train_dataset.block_size,
                   n_layer=6, n_head=8, n_embd=128, model_type=args.model_type, max_timestep=max(timesteps))
 model = GPT(mconf)
+
+
+rtpt = RTPT(name_initials='JB', experiment_name='OCDT', max_iterations=5)
+rtpt.start()
 
 # initialize a trainer instance and kick off training
 epochs = args.epochs
