@@ -48,7 +48,7 @@ def convert(path):
         return obss, actions, returns, done_idx_cont, rtgs, timesteps 
 
 
-obss, actions, returns, done_idx, rtgs, timesteps = convert("/data/SL/pong/")
+# obss, actions, returns, done_idx, rtgs, timesteps = convert("/data/SL/pong/")
 
 # +
 #returns
